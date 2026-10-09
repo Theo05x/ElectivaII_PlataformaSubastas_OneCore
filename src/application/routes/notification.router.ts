@@ -1,5 +1,5 @@
     import { Router } from 'express';
-    import { listarNotificaciones } from '../controllers/notificationController';
+    import { listarNotificaciones } from '../controllers/notification.controller';
 
     const notificationRouter = Router();
 

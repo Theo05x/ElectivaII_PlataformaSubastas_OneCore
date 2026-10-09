@@ -7,7 +7,7 @@ import {
   cancelarSubasta, 
   registrarPuja, 
   obtenerPujasRechazadas 
-} from '../controllers/auctionController';
+} from '../controllers/auction.controller';
 
 const auctionRouter = Router();
 

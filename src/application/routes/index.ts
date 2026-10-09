@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import authRouter from './authRouter';
-import auctionRouter from './auctionRouter';
-import paymentRouter from './paymentRouter';
-import notificationRouter from './notificationRouter';
+import authRouter from './auth.router';
+import auctionRouter from './auction.router';
+import paymentRouter from '../src/application/routes/paymentRouter';
+import notificationRouter from './notification.router';
 
 const apiRouter = Router();
 
