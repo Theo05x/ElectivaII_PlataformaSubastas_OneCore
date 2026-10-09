@@ -1,5 +1,5 @@
 import express, { Application } from 'express'
-import apiRouter from './routes/router';
+import apiRouter from './src/application/routes/router';
 
 const PORT: number = 5000;
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { obtenerOrdenPago, procesarWebhookPago } from '../controllers/paymentController';
+import { obtenerOrdenPago, procesarWebhookPago } from '../controllers/payment.controller';
 
 const paymentRouter = Router();
 
