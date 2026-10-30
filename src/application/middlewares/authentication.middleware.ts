@@ -1,24 +1,36 @@
-import { Request, Response, NextFunction } from "express";
-import { extractTokenFromHeader } from "../../infraestructure/jwt/jwt.service";
+import { RequestHandler } from 'express';
+import { TokenService } from '../../domain/ports/repository-ports';
 
+export const createAuthenticateToken = (
+  tokens: Pick<TokenService, 'verify'>
+): RequestHandler => (request, response, next) => {
+  const [scheme, token] = (request.headers.authorization ?? '').split(' ');
+  if (scheme?.toLowerCase() !== 'bearer' || !token) {
+    response.status(401).json({
+      status: 'error',
+      error: {
+        code: 'TOKEN_REQUIRED',
+        message: 'Envía el token como Authorization: Bearer <token>.',
+      },
+    });
+    return;
+  }
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-
-    try {
-        const authHeader = req.headers['authorization']; 
-        const token = extractTokenFromHeader(authHeader);
-
-        if (!token) {
-            return res.status(401).json({
-                error: 'Token de acceso requerido',
-                message: 'Debes ingresar un token valido en el header Authorization'
-            });  
-        }
-
-        const payload = null;
-        
-
-    } catch (error) {
-        
+  try {
+    const userId = tokens.verify(token);
+    if (!userId) {
+      response.status(401).json({
+        status: 'error',
+        error: { code: 'INVALID_TOKEN', message: 'El token no identifica un usuario.' },
+      });
+      return;
     }
-}
+    request.user = { id: userId };
+    next();
+  } catch {
+    response.status(401).json({
+      status: 'error',
+      error: { code: 'INVALID_TOKEN', message: 'El token es inválido o expiró.' },
+    });
+  }
+};

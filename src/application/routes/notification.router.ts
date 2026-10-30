@@ -1,8 +1,13 @@
-    import { Router } from 'express';
-    import { listarNotificaciones } from '../controllers/notification.controller';
+import { RequestHandler, Router } from 'express';
+import { NotificationController } from '../controllers/notification.controller';
 
-    const notificationRouter = Router();
+export const createNotificationRouter = (
+  controller: NotificationController,
+  authenticateToken: RequestHandler
+) => {
+  const notificationRouter = Router();
 
-    notificationRouter.get('/', listarNotificaciones);
+  notificationRouter.get('/', authenticateToken, controller.listarNotificaciones);
 
-    export default notificationRouter;
+  return notificationRouter;
+};

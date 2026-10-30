@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "strict": true,
     "module": "node16",
     "esModuleInterop": true,
     "target": "es6",
     "moduleResolution": "node16",
     "sourceMap": true,
+    "rootDir": "./src",
     "outDir": "./dist",
-    "types": ["node"]
-  },
-
-  "lib": ["es2015"]
+    "types": ["node"],
+    "lib": ["es2015"]
+  }
 }

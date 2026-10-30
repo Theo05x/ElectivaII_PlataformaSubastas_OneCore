@@ -1,9 +1,14 @@
 import { Router } from 'express';
-import { obtenerOrdenPago, procesarWebhookPago } from '../controllers/payment.controller';
+import { RequestHandler } from 'express';
+import { PaymentController } from '../controllers/payment.controller';
 
-const paymentRouter = Router();
+export const createPaymentRouter = (
+  controller: PaymentController,
+  authenticateToken: RequestHandler
+) => {
+  const paymentRouter = Router();
 
-paymentRouter.get('/orders/:id', obtenerOrdenPago);
-paymentRouter.post('/webhook', procesarWebhookPago);
+  paymentRouter.get('/:id', authenticateToken, controller.obtenerOrdenPago);
 
-export default paymentRouter;
+  return paymentRouter;
+};
