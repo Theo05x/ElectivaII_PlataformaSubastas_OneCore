@@ -1,22 +1,23 @@
-import { Router } from 'express';
-import { 
-  listarCategorias, 
-  crearSubasta, 
-  listarSubastas, 
-  obtenerSubastaPorId, 
-  cancelarSubasta, 
-  registrarPuja, 
-  obtenerPujasRechazadas 
-} from '../controllers/auction.controller';
+import { RequestHandler, Router } from 'express';
+import { AuctionController } from '../controllers/auction.controller';
 
-const auctionRouter = Router();
+export const createAuctionRouter = (
+  controller: AuctionController,
+  authenticateToken: RequestHandler
+) => {
+  const auctionRouter = Router();
 
-auctionRouter.get('/categories', listarCategorias);
-auctionRouter.post('/', crearSubasta);
-auctionRouter.get('/', listarSubastas);
-auctionRouter.get('/:id', obtenerSubastaPorId);
-auctionRouter.post('/:id/cancel', cancelarSubasta);
-auctionRouter.post('/:id/bids', registrarPuja);
-auctionRouter.get('/:id/rejected-bids', obtenerPujasRechazadas);
+  auctionRouter.get('/categories', controller.listarCategorias);
+  auctionRouter.post('/', authenticateToken, controller.crearSubasta);
+  auctionRouter.get('/', controller.listarSubastas);
+  auctionRouter.get('/:id', authenticateToken, controller.obtenerSubastaPorId);
+  auctionRouter.patch('/:id', authenticateToken, controller.cancelarSubasta);
+  auctionRouter.post('/:id/bids', authenticateToken, controller.registrarPuja);
+  auctionRouter.get(
+    '/:id/rejected-bids',
+    authenticateToken,
+    controller.obtenerPujasRechazadas
+  );
 
-export default auctionRouter;
+  return auctionRouter;
+};
