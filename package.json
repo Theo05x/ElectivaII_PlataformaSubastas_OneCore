@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node --watch dist/index.js",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "test": "tsx --test --test-reporter=./tests/informe-pruebas.mjs tests/domain.test.ts tests/auction.service.test.ts tests/payment.service.test.ts tests/auth.service.test.ts tests/websocket.integration.test.ts",
+    "typecheck:test": "tsc --project tsconfig.test.json --noEmit"
   },
   "repository": {
     "type": "git",
@@ -23,14 +25,15 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.6",
     "dotenv": "^18.0.9",
     "express": "^5.2.1",
     "mongoose": "^9.11.4",
+    "socket.io-client": "^4.8.4",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "@types/node": "^26.4.0",
     "jsonwebtoken": "^9.0.3",
     "socket.io": "^4.8.4"
   }

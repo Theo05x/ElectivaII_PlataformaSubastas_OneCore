@@ -10,5 +10,6 @@
     "outDir": "./dist",
     "types": ["node"],
     "lib": ["es2015"]
-  }
+  },
+  "include": ["src/**/*.ts"]
 }

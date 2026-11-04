@@ -98,7 +98,7 @@ inicio de sesión se vuelve a calcular el hash para compararlo con el guardado.
    Para desarrollo, usa `npm run dev`.
 
 Antes de arrancar la API, inicia el servicio local de MongoDB o confirma que el
-URI de Atlas sea accesible. El servidor HTTP escucha en el puerto `5000` por
+URI de Atlas sea accesible. El servidor HTTP escucha en el puerto `3000` por
 defecto. Si la resolución DNS de Atlas lo requiere, define
 `MONGODB_DNS_SERVERS` con direcciones separadas por comas. La API y el
 WebSocket comparten el mismo servidor HTTP.
@@ -106,9 +106,25 @@ WebSocket comparten el mismo servidor HTTP.
 TypeScript se compila con `strict: true`; no hay usos explícitos de `any` en el
 código de `src`.
 
+### Pruebas unitarias
+
+Ejecuta la suite sin levantar MongoDB:
+
+```powershell
+npm test
+npm run typecheck:test
+npm run build
+```
+
+La prueba `tests/websocket.integration.test.ts` levanta un servidor Socket.IO
+local y conecta dos usuarios autenticados a la misma subasta. Verifica que
+ambos reciben cada puja en tiempo real, que el conteo llega a dos participantes
+y que el aviso de `bid.outbid` solo llega al usuario superado. No requiere
+MongoDB: usa un repositorio en memoria y tokens de prueba.
+
 ## API REST v1
 
-Base URL local: `http://localhost:5000/api/v1`.
+Base URL local: `http://localhost:3000/api/v1`.
 
 Las rutas protegidas requieren:
 
@@ -279,7 +295,7 @@ la librería `ws`; el cliente debe usar `socket.io-client`:
 ```javascript
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5000', { path: '/socket.io' });
+const socket = io('http://localhost:3000', { path: '/socket.io' });
 
 socket.on('connected', () => {
   socket.emit('authenticate', { token: 'TOKEN_JWT' });
@@ -310,9 +326,9 @@ directamente. Los errores se envían como evento `error` con un objeto
 ### Probar Socket.IO desde Postman Desktop
 
 1. Inicia la API (`npm run dev`) y confirma el puerto en la terminal. El servidor
-   usa `PORT` del `.env`; si no está definido, usa `5000`.
+   usa `PORT` del `.env`; si no está definido, usa `3000`.
 2. En Postman, crea una solicitud **Socket.IO** (no una solicitud WebSocket
-   genérica). Conecta a `ws://localhost:5000` o al puerto que indique la API.
+   genérica). Conecta a `ws://localhost:3000` o al puerto que indique la API.
    Usa el path `/socket.io` si Postman muestra ese ajuste. No necesitas agregar
    parámetros ni encabezados para esta prueba.
 3. En **Events**, agrega los eventos que quieras escuchar: `connected`,
